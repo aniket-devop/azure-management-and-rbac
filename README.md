@@ -8,10 +8,12 @@
 ![Microsoft Entra ID](https://img.shields.io/badge/Microsoft_Entra_ID-0078D4?style=for-the-badge)
 ![Azure RBAC](https://img.shields.io/badge/Azure-RBAC-5E5E5E?style=for-the-badge)
 ![Cloud Governance](https://img.shields.io/badge/Cloud-Governance-107C10?style=for-the-badge)
+![Cloud Architecture](https://img.shields.io/badge/Cloud-Architecture-243A5E?style=for-the-badge)
 ![DevOps](https://img.shields.io/badge/DevOps-Learning_Journey-D83B01?style=for-the-badge)
-![Markdown Documentation](https://img.shields.io/badge/Docs-Markdown-444444?style=for-the-badge&logo=markdown&logoColor=white)
+![Documentation](https://img.shields.io/badge/Documentation-Technical_Notes-444444?style=for-the-badge)
+![Markdown](https://img.shields.io/badge/Markdown-000000?style=for-the-badge&logo=markdown&logoColor=white)
 
-**[Diagrams](#21-original-architecture-diagrams)** · **[Enterprise Example](#20-real-world-enterprise-architecture)** · **[Medium Articles](#23-my-related-medium-articles)** · **[Microsoft Learn Resources](#24-official-microsoft-learning-resources)**
+**[Diagrams](#20-original-architecture-diagrams)** · **[Enterprise Scenario](#19-real-world-enterprise-scenario)** · **[Medium Articles](#22-my-related-medium-articles)** · **[Microsoft Docs](#23-official-microsoft-documentation)**
 
 </div>
 
@@ -19,45 +21,46 @@
 
 ## Table of Contents
 
-1. [Introduction](#1-introduction)
+1. [Project Introduction](#1-project-introduction)
 2. [Project Overview](#2-project-overview)
 3. [Learning Objectives](#3-learning-objectives)
 4. [Azure Architecture Overview](#4-azure-architecture-overview)
 5. [Azure Resource Hierarchy](#5-azure-resource-hierarchy)
-6. [Management Groups Explained](#6-management-groups-explained)
-7. [Parent and Child Management Groups](#7-parent-and-child-management-groups)
-8. [Azure Subscription Management](#8-azure-subscription-management)
-9. [Resource Groups Explained](#9-resource-groups-explained)
-10. [Microsoft Entra ID Explained](#10-microsoft-entra-id-explained)
-11. [Authentication vs Authorization](#11-authentication-vs-authorization)
-12. [Azure RBAC Explained](#12-azure-rbac-explained)
-13. [Azure Roles vs Entra ID Roles](#13-azure-roles-vs-entra-id-roles)
-14. [Scope and Role Assignments](#14-scope-and-role-assignments)
+6. [Azure Management Groups](#6-azure-management-groups)
+7. [Azure Subscriptions](#7-azure-subscriptions)
+8. [Azure Resource Groups](#8-azure-resource-groups)
+9. [Microsoft Entra ID](#9-microsoft-entra-id)
+10. [Authentication vs Authorization](#10-authentication-vs-authorization)
+11. [Azure RBAC](#11-azure-rbac)
+12. [Azure Built-in Roles](#12-azure-built-in-roles)
+13. [Azure RBAC vs Microsoft Entra ID Roles](#13-azure-rbac-vs-microsoft-entra-id-roles)
+14. [Azure RBAC Scope](#14-azure-rbac-scope)
 15. [User Onboarding and Offboarding](#15-user-onboarding-and-offboarding)
 16. [Group-Based RBAC](#16-group-based-rbac)
-17. [Entra ID Security Groups](#17-entra-id-security-groups)
-18. [Least Privilege Principle](#18-least-privilege-principle)
-19. [Azure Security Best Practices](#19-azure-security-best-practices)
-20. [Real-World Enterprise Architecture](#20-real-world-enterprise-architecture)
-21. [Original Architecture Diagrams](#21-original-architecture-diagrams)
-22. [Key Takeaways](#22-key-takeaways)
-23. [My Related Medium Articles](#23-my-related-medium-articles)
-24. [Official Microsoft Learning Resources](#24-official-microsoft-learning-resources)
-25. [About the Author](#25-about-the-author)
+17. [Least Privilege Principle](#17-least-privilege-principle)
+18. [Enterprise Security Best Practices](#18-enterprise-security-best-practices)
+19. [Real-World Enterprise Scenario](#19-real-world-enterprise-scenario)
+20. [Original Architecture Diagrams](#20-original-architecture-diagrams)
+21. [Key Takeaways](#21-key-takeaways)
+22. [My Related Medium Articles](#22-my-related-medium-articles)
+23. [Official Microsoft Documentation](#23-official-microsoft-documentation)
+24. [About the Author](#24-about-the-author)
 
 ---
 
-## 1. Introduction
+## 1. Project Introduction
 
 Every Azure environment, from a single-subscription sandbox to a multi-division enterprise, has to answer two questions:
 
 1. **How are resources organized?** Tenant Root Group → Management Groups → Subscriptions → Resource Groups → Resources.
 2. **Who can do what, and where?** Microsoft Entra ID identities → Azure RBAC roles → scopes.
 
-This repository documents my understanding of those two questions. It is built around **five original architecture diagrams** that I drew while studying Azure and also used in my Medium articles. Each diagram is kept exactly as drawn and is accompanied by a technical explanation, with clarifications where the original diagram simplifies how Azure actually behaves.
+Getting these wrong is expensive. Without a clear hierarchy, governance is applied inconsistently and costs are hard to attribute. Without disciplined access control, people end up with more permissions than they need, which is one of the most common causes of accidental outages and security exposure.
+
+This repository documents my understanding of both questions through **five original architecture diagrams** and written technical explanations. Where a diagram simplifies how Azure actually behaves, the text beside it explains the technically correct behavior.
 
 > [!NOTE]
-> **Learning and documentation project.** This repository explains concepts and architecture patterns. It does **not** contain deployed infrastructure, Infrastructure as Code, or production configuration.
+> **Learning and documentation project.** This repository explains concepts and architecture patterns. It does **not** contain deployed infrastructure, Infrastructure as Code, or production configuration, and it is not a production or professional enterprise implementation.
 >
 > The diagrams are **original educational illustrations**. Names such as *KGF*, *Rangoli*, *Dhondhu*, *Bhakua* and *Tinku*, and the amount "18000 Rs.", are **fictional teaching examples**. Annotations are written in Hinglish (Hindi in English letters); an English translation is in [`docs/additional-notes.md`](docs/additional-notes.md).
 
@@ -68,11 +71,11 @@ This repository documents my understanding of those two questions. It is built a
 | Item | Details |
 |---|---|
 | **Topic** | Management Groups, Subscriptions, Resource Groups, Microsoft Entra ID, Azure RBAC, Cloud Governance |
-| **Format** | Five original diagrams, each with written technical explanation |
-| **Focus** | Resource hierarchy, identity, authentication vs authorization, role assignment, group-based access |
-| **Audience** | Azure learners, cloud and DevOps engineers, hiring managers reviewing my learning |
+| **Format** | Five original diagrams, each with a written technical explanation |
+| **Scope** | Resource hierarchy, identity, authentication vs authorization, role assignment, group-based access, least privilege |
+| **Audience** | Azure learners, Cloud and DevOps engineers, anyone reviewing my learning |
 | **Status** | Conceptual learning documentation. No deployed resources |
-| **Companion content** | [Medium articles](#23-my-related-medium-articles) |
+| **Companion content** | [Medium articles](#22-my-related-medium-articles) |
 
 ### Repository structure
 
@@ -140,9 +143,10 @@ Azure separates **identity** from **resource organization**. Azure RBAC connects
 
 | Level | What it is | Typical purpose |
 |---|---|---|
-| **Tenant Root Group** | Top-level management group of the Entra tenant | Governance and access that must reach every subscription |
+| **Tenant** | The Microsoft Entra ID directory for an organization | Identity boundary: users, groups, applications |
+| **Tenant Root Group** | Top-level management group of the tenant | Governance and access that must reach every subscription |
 | **Management Group** | Container for subscriptions and child management groups | Group subscriptions by business unit, environment or compliance need |
-| **Subscription** | Billing, access and limits/quota boundary | Isolate teams, workloads or environments |
+| **Subscription** | Billing, access and limits boundary | Isolate teams, workloads or environments |
 | **Resource Group** | Logical container for resources that share a lifecycle | Deploy, manage and delete related resources together |
 | **Resource** | A single service instance (VM, storage account, and so on) | The actual workload components |
 
@@ -150,16 +154,31 @@ Azure separates **identity** from **resource organization**. Azure RBAC connects
 
 ---
 
-## 6. Management Groups Explained
+## 6. Azure Management Groups
 
-A **management group** is a container **above subscriptions**. It lets you apply governance (Azure Policy) and access control (Azure RBAC) to many subscriptions at once.
+A **management group** is a governance scope **above subscriptions**. It lets you apply governance (Azure Policy) and access control (Azure RBAC) to many subscriptions at once.
 
-- It can contain **subscriptions and other (child) management groups**, but not resources directly.
-- Role assignments and policies applied to it are **inherited** by everything below.
-- As my Diagram 1 notes, the hierarchy supports **security, cost organization, and governance/compliance**.
+| Concept | Explanation |
+|---|---|
+| **Tenant Root Group** | The single top-level management group in a directory. Its ID is the same as the tenant ID, and it cannot be moved or deleted |
+| **Parent management group** | A management group that has others (or subscriptions) beneath it |
+| **Child management group** | A management group nested under a parent |
+| **Multiple management groups** | A parent can have many children, for example one per business unit |
+| **Policy inheritance** | A policy assigned to a management group applies to all nested management groups, subscriptions and resources |
+| **Access inheritance** | An Azure role assigned to a management group is inherited by everything beneath it |
+| **Enterprise governance** | One assignment at a management group replaces repeating the same assignment on every subscription |
+
+**Rules worth remembering**
+
+- Each management group and each subscription has exactly **one** parent; a management group can have **many** children.
+- A hierarchy supports up to **six levels** of depth, not counting the root level or the subscription level.
+- A management group contains subscriptions and other management groups, **not resources directly**.
+- All subscriptions in a management group must trust the **same** Microsoft Entra tenant.
+- New subscriptions land under the Tenant Root Group by default and can then be moved.
+- No one has access to the root management group by default; a Global Administrator can **elevate access** to gain it.
 
 > [!NOTE]
-> **Clarification of Diagram 1.** The diagram says a management group is the "top level container". More precisely, the **Tenant Root Group** is the top-level management group, and other management groups sit beneath it. For **cost**, management groups provide organizational structure; spend itself is tracked per subscription and resource group, typically with tags and Microsoft Cost Management.
+> **Clarification of Diagram 1.** The diagram says a management group is the "top level container". More precisely, the **Tenant Root Group** is the top-level management group and every other management group sits beneath it. For **cost**, management groups give organizational structure; spend itself is tracked per subscription and resource group, usually with tags and Microsoft Cost Management.
 
 ### Management Group vs Resource Group
 
@@ -173,26 +192,13 @@ A **management group** is a container **above subscriptions**. It lets you apply
 
 ---
 
-## 7. Parent and Child Management Groups
+## 7. Azure Subscriptions
 
-Diagram 1 uses a family analogy: the Tenant Root Group is the "Papa" (parent) and the groups below it are children.
-
-| Rule | Explanation |
-|---|---|
-| One parent | Each management group (except the root) and each subscription has exactly **one** parent management group |
-| Many children | A management group can have multiple child management groups and subscriptions |
-| Depth limit | Up to **six levels** of depth, not counting the root level or the subscription level |
-| Root is permanent | The Tenant Root Group cannot be deleted or moved |
-| Inheritance | Anything assigned at a parent applies to all descendants |
-
----
-
-## 8. Azure Subscription Management
-
-A **subscription** ties resources to **billing** and provides an **access and limits boundary**.
+A **subscription** is the unit of **billing** and an **access and limits boundary**.
 
 - A subscription trusts **exactly one** Microsoft Entra tenant; one tenant can have **many** subscriptions.
-- New subscriptions are placed under the **Tenant Root Group** by default and can then be moved to another management group.
+- Costs are reported per subscription, which makes subscriptions a natural boundary for teams, workloads or environments.
+- Service quotas and limits apply per subscription.
 - Moving a subscription between management groups changes which inherited policies and role assignments apply to it.
 
 ### Tenant vs Subscription
@@ -206,11 +212,11 @@ A **subscription** ties resources to **billing** and provides an **access and li
 | Relationship | One tenant → many subscriptions | Each subscription → one trusted tenant |
 
 > [!NOTE]
-> **"Azure Account" is a teaching label.** Diagram 2 uses "Azure Account - KGF" as one box. In Microsoft's terms, you sign in as an identity in an Entra tenant, and the billing and resource boundary is the subscription. The three items listed in Diagram 2 (a tenant, a first user, and the Tenant Root Group) are a good mental model. Technically, the root management group appears once management groups are first used in the tenant, so treat it as always present conceptually.
+> **"Azure Account" is a teaching label.** Diagram 2 uses "Azure Account - KGF" as one box. In Microsoft's terms you sign in as an identity in an Entra tenant, and the billing and resource boundary is the subscription. The three items in Diagram 2 (a tenant, a first user, and the Tenant Root Group) are a good mental model. Technically, the root management group is created when management groups are first used in the tenant, so treat it as always present conceptually.
 
 ---
 
-## 9. Resource Groups Explained
+## 8. Azure Resource Groups
 
 - Every resource belongs to **exactly one** resource group.
 - Resources in a group usually share a **lifecycle**: deployed, updated and deleted together.
@@ -221,17 +227,24 @@ My diagrams use resource groups to separate environments: `rg-dev`, `rg-qa`, `rg
 
 ---
 
-## 10. Microsoft Entra ID Explained
+## 9. Microsoft Entra ID
 
 **Microsoft Entra ID** (formerly Azure Active Directory) is Microsoft's cloud identity and access management service and the **identity provider** for Azure.
 
-- A **tenant** is a dedicated instance of Entra ID for an organization, identified by a **Tenant ID**.
-- It stores **users** and **groups** and performs **authentication**.
-- The diagrams show a tenant on the **Free** license, which covers basic user and group management.
+| Concept | Explanation |
+|---|---|
+| **Tenant** | A dedicated instance of Entra ID for an organization, identified by a Tenant ID |
+| **Users** | Identities for people, stored in the directory |
+| **Groups** | Collections of users (and other objects) used to manage access together |
+| **Authentication** | Entra ID verifies credentials (password, OTP/MFA) and issues a token |
+| **Identity management** | Creating, updating, disabling and deleting identities across their lifecycle |
+| **Administrative roles** | Entra roles such as Global Administrator and User Administrator that manage the directory |
+
+The diagrams show a tenant on the **Free** license, which covers basic user and group management.
 
 ---
 
-## 11. Authentication vs Authorization
+## 10. Authentication vs Authorization
 
 | | Authentication (AuthN) | Authorization (AuthZ) |
 |---|---|---|
@@ -241,42 +254,55 @@ My diagrams use resource groups to separate environments: `rg-dev`, `rg-qa`, `rg
 | Result | A **token** proving identity | Actions allowed or denied |
 | Diagram metaphor | The **Gate**: "Andar ghusna = Authentication" (*entering = authentication*) | What you may do once inside |
 
-**Flow shown in Diagrams 2 and 3**
+**Practical example**
 
-1. A user opens `portal.azure.com`.
-2. The user signs in with username, password and OTP against Entra ID.
-3. On success the user receives a **token**.
-4. Azure evaluates **RBAC role assignments** to decide what that identity can do.
+1. A user opens `portal.azure.com` and signs in with username, password and OTP. Entra ID verifies them and issues a token. **This is authentication.**
+2. The user opens a resource group. Azure checks their role assignments at that scope. **This is authorization.**
+3. If the user has no role assignment, they sign in successfully but see no resources.
 
 > [!IMPORTANT]
 > A user can sign in successfully and still see **nothing** in Azure. Authentication succeeded, but with no role assignment there is no authorization to any resource.
 
 ---
 
-## 12. Azure RBAC Explained
+## 11. Azure RBAC
 
-**Azure role-based access control (RBAC)** is the authorization system for Azure resources. Diagram 3 summarizes it: *to give any user access you need two things, **Scope** and **Role**.* In full, a role assignment has three parts:
+**Azure role-based access control (Azure RBAC)** is the authorization system for Azure resources, built on Azure Resource Manager. Diagram 3 summarizes it: *to give any user access you need two things, **Scope** and **Role**.* In full, a role assignment has three elements:
 
-| Part | Question | Example |
+| Element | Question | Example |
 |---|---|---|
 | **Security principal** | Who? | A user, group, service principal or managed identity |
 | **Role definition** | What can they do? | Owner, Contributor, Reader |
 | **Scope** | Where does it apply? | Management group, subscription, resource group, resource |
 
-### Core built-in roles
+**Why it is required.** Not everyone who can sign in should be able to delete a VM or change a network rule. RBAC lets you grant exactly the access a person or workload needs, at exactly the level it is needed.
 
-| Role | Manage resources | Assign roles to others | Typical use |
-|---|---|---|---|
-| **Owner** | Full access | **Yes** | A very small set of trusted administrators |
-| **Contributor** | Create and manage all resource types | **No** | Engineers and DevOps teams |
-| **Reader** | View only | No | Auditors, stakeholders |
+**Additive model.** A principal's effective permissions are the **sum** of all their role assignments across scopes.
 
-> [!IMPORTANT]
-> **Contributor cannot grant access.** Only roles with role-assignment permissions, such as Owner or User Access Administrator, can create role assignments. That is why Contributor is the safer default for engineers.
+**Inheritance.** Role assignments at a scope apply to every child scope beneath it.
 
 ---
 
-## 13. Azure Roles vs Entra ID Roles
+## 12. Azure Built-in Roles
+
+| Role | Permissions | Can assign Azure RBAC roles? | Typical use |
+|---|---|---|---|
+| **Owner** | Full management access to all resources, **including assigning Azure RBAC roles** | **Yes** | A very small set of trusted administrators |
+| **Contributor** | Create and manage all resource types, but **cannot assign Azure RBAC roles** | **No** | Engineers and DevOps teams |
+| **Reader** | View resources without modifying them | No | Auditors, stakeholders |
+
+**Differences, precisely**
+
+- **Owner vs Contributor:** the key difference is access delegation. Owner can grant access to others; Contributor cannot.
+- **Contributor vs Reader:** Contributor can create, change and delete resources; Reader can only view.
+- Only roles with role-assignment permissions, such as **Owner** or **User Access Administrator**, can create role assignments.
+
+> [!TIP]
+> Azure has many more built-in roles than these three, including narrower service-specific ones (for example *Virtual Machine Contributor*). Owner, Contributor and Reader are the foundational three used throughout my diagrams.
+
+---
+
+## 13. Azure RBAC vs Microsoft Entra ID Roles
 
 These are **two separate role systems**. Both appear at the top of Diagrams 2 and 3.
 
@@ -286,14 +312,18 @@ These are **two separate role systems**. Both appear at the top of Diagrams 2 an
 | **Examples** | Owner, Contributor, Reader | Global Administrator, User Administrator, Privileged Role Administrator |
 | **Scope** | Management group, subscription, resource group, resource | Tenant (or an administrative unit) |
 | **Managed in** | Access control (IAM) blade | Microsoft Entra admin center → Roles and administrators |
+| **Authorization question** | "What can you do with Azure resources?" | "What can you do in the directory?" |
 
-### Entra roles shown in the diagrams
+### Roles discussed in this project
 
-| Role | Purpose |
-|---|---|
-| **Global Administrator** | Highest directory privilege; can manage almost all aspects of Entra ID |
-| **User Administrator** | Creates and manages users and groups, the role relevant to onboarding |
-| **Privileged Role Administrator** | Manages role assignments in Entra ID and Privileged Identity Management |
+| Role | System | Purpose |
+|---|---|---|
+| **Global Administrator** | Entra | Highest directory privilege; can manage almost all aspects of Entra ID |
+| **User Administrator** | Entra | Creates and manages users and groups, the role relevant to onboarding |
+| **Privileged Role Administrator** | Entra | Manages role assignments in Entra ID and Privileged Identity Management |
+| **Owner** | Azure RBAC | Full resource access plus the ability to assign Azure roles |
+| **Contributor** | Azure RBAC | Manage resources, no role assignment |
+| **Reader** | Azure RBAC | View resources only |
 
 ### Global Administrator vs Subscription Owner
 
@@ -308,9 +338,9 @@ These are **two separate role systems**. Both appear at the top of Diagrams 2 an
 
 ---
 
-## 14. Scope and Role Assignments
+## 14. Azure RBAC Scope
 
-Scopes are hierarchical, and assignments **inherit downward**:
+Azure RBAC has four scope levels, and assignments **inherit downward**:
 
 ```text
 Management Group     ← broadest
@@ -319,12 +349,12 @@ Management Group     ← broadest
              └─ Resource     ← narrowest
 ```
 
-| Scope | Effect of Contributor assigned here |
+| Scope | Effect of a Contributor assignment here |
 |---|---|
-| Management group | All subscriptions beneath it |
+| Management group | All subscriptions (and everything inside them) beneath it |
 | Subscription | All resource groups and resources in it |
 | Resource group | Only resources in that group |
-| Resource | Only that single resource |
+| Individual resource | Only that single resource |
 
 ### Assignments shown in my diagrams
 
@@ -343,11 +373,11 @@ Management Group     ← broadest
 
 ## 15. User Onboarding and Offboarding
 
-Diagram 4 notes that subscription creation, management group creation and the association between them together make up onboarding and offboarding of a team or workload. Applied to a person, the lifecycle looks like this:
+Diagram 4 notes that subscription creation, management group creation and the association between them together make up "onboarding and offboarding". Applied to a person, a secure lifecycle looks like this:
 
 | Stage | Identity (Entra ID) | Access (Azure RBAC) | Organization |
 |---|---|---|---|
-| **Onboarding** | Create the user (needs a role such as User Administrator) | Add the user to the right **group**; the group already holds the role at the right scope | Workload subscription already sits under the right management group |
+| **Onboarding** | Create the user (needs a role such as User Administrator) | Add the user to the right **group**; the group already holds the role at the right scope | The team's subscription already sits under the right management group |
 | **Role change** | Move the user between groups | Access changes through group membership | No change |
 | **Offboarding** | Remove from groups; disable or delete the account | Access ends with group membership | Retire or move the subscription if the whole team is dissolved |
 
@@ -373,14 +403,7 @@ Diagram 4 shows the three-step pattern:
 | Offboarding means hunting down every assignment | Offboarding means removing group membership |
 | Role sprawl and mistakes | Consistent, repeatable model |
 
-> [!TIP]
-> Azure also limits the number of role assignments per subscription. Assigning to groups keeps you far from that limit.
-
----
-
-## 17. Entra ID Security Groups
-
-A **security group** is an Entra ID group used to grant access to resources. Members can be users, other groups, devices or service principals. A role assigned to the group applies to every member.
+A **security group** is an Entra ID group used to grant access to resources. A role assigned to the group applies to every member.
 
 ### Groups shown in Diagrams 4 and 5
 
@@ -399,42 +422,49 @@ A **security group** is an Entra ID group used to grant access to resources. Mem
 
 ---
 
-## 18. Least Privilege Principle
+## 17. Least Privilege Principle
 
-Diagram 5 states three rules at the top, which together express least privilege:
+**Least privilege** means giving each identity only the permissions it needs, at the narrowest scope, for only as long as needed. It limits the damage from mistakes and compromised accounts.
+
+Diagram 5 states three rules at the top, which together express it:
 
 | Rule in the diagram | Professional interpretation |
 |---|---|
 | "Minimum privileged role dena hai" | Grant only the permissions required for the task |
-| "Kisi ko Owner nahi dena hai, only Contributor" | Keep Owner for a very small trusted set; give engineers Contributor |
+| "Kisi ko Owner nahi dena hai, Only Contributor" | Keep Owner for a very small trusted set; give engineers Contributor |
 | "Group based RBAC use karna hai" | Assign roles to groups, not individuals |
 
-Interns in Diagram 5 receive Contributor only on `rg-dev`, a direct application of the principle: smallest role, narrowest scope, via a group.
+Interns in Diagram 5 receive Contributor only on `rg-dev`: smallest role, narrowest scope, via a group.
 
 ---
 
-## 19. Azure Security Best Practices
+## 18. Enterprise Security Best Practices
 
-Beyond what the diagrams show, these are widely recommended Azure practices (verify against current [Microsoft Learn guidance](#24-official-microsoft-learning-resources)):
+These are widely recommended practices beyond what the diagrams show. Verify details against the [Microsoft documentation](#23-official-microsoft-documentation); some capabilities need specific licenses.
 
-- Assign access at the **narrowest scope** that works: resource group before subscription before management group.
-- Keep **Global Administrator** assignments few, and use separate accounts for daily work and privileged work.
-- Require **MFA**, especially for administrators.
-- Prefer **just-in-time** privileged access with Microsoft Entra Privileged Identity Management (licensing applies) over permanent elevated roles.
-- Run **access reviews** to remove stale assignments and group members.
-- Keep **more than one** trusted owner or administrator so access never depends on one person.
-- Give `prod` the tightest access; separate `dev`, `qa`, `uat` and `prod`.
-- Use **Azure Policy** at management group level for guardrails such as allowed regions and required tags.
+| Practice | What it means |
+|---|---|
+| **Least privilege** | Smallest role at the narrowest scope that works |
+| **Group-based access** | Assign roles to groups, never to scattered individuals |
+| **Regular access reviews** | Periodically remove stale assignments and group members (Microsoft Entra access reviews; licensing applies) |
+| **Privileged access management** | Prefer just-in-time elevation with Microsoft Entra Privileged Identity Management over permanent Owner or Global Administrator (licensing applies) |
+| **Role assignment auditing** | Review who changed role and policy assignments through the Azure Activity Log |
+| **Separation of duties** | Do not let one person both request and approve sensitive changes; keep identity administration and resource administration with different people where practical |
+| **Secure identity lifecycle** | Remove access promptly at role change or exit; require MFA, especially for administrators |
+| **Governance policies** | Use Azure Policy at management group level for guardrails such as allowed regions and required tags |
 
-> [!NOTE]
-> Diagram 5 shows a single Owner. That illustrates "very few owners"; real organizations usually keep a second one for continuity.
+Additional notes:
+
+- Keep **Global Administrator** assignments few, and use separate accounts for daily and privileged work.
+- Keep **more than one** trusted owner or administrator so access never depends on one person. Diagram 5 shows a single Owner to illustrate "very few owners".
+- Give `prod` the tightest access and keep `dev`, `qa`, `uat` and `prod` separate.
 
 ---
 
-## 20. Real-World Enterprise Architecture
+## 19. Real-World Enterprise Scenario
 
 > [!NOTE]
-> This is a **conceptual design** based on Diagram 1 and the access model in Diagrams 4 and 5. It is **not** a deployed environment.
+> This is a **conceptual example** for learning. It is **not** an actual deployment. It extends the structure in Diagram 1 with an IT department.
 
 ```text
 Tenant Root Group
@@ -443,13 +473,19 @@ Tenant Root Group
 │   ├── Recruitment Management Group
 │   │   └── Recruitment Subscription
 │   │       └── Resource Groups
-│   └── HR Subscription (named "Rangoli" in Diagram 1)
+│   └── HR Subscription
 │       └── Resource Groups
 │
-└── Sales Management Group
-    ├── Sales Subscription
-    │   └── Resource Groups
-    └── Ads Subscription
+├── Sales Management Group
+│   ├── Sales Subscription
+│   │   └── Resource Groups
+│   └── Ads Subscription
+│       └── Resource Groups
+│
+└── IT Management Group
+    ├── IT Shared Services Subscription
+    │   └── rg-dev · rg-qa · rg-uat · rg-prod
+    └── IT Security Subscription
         └── Resource Groups
 ```
 
@@ -457,21 +493,21 @@ Tenant Root Group
 
 | Component | Role in the design |
 |---|---|
-| **Management groups** | Separate business units so each gets its own governance and access rules |
+| **Management groups** | Separate HR, Sales and IT so each gets its own governance and access rules |
 | **Subscriptions** | Billing and isolation boundary per team or workload |
-| **Resource groups** | Group resources by workload or environment (`rg-dev`, `rg-prod`) |
+| **Resource groups** | Group resources by workload or environment |
 | **Microsoft Entra ID** | Holds employee identities and authenticates them |
 | **Security groups** | Collect users by function, for example "Sales Subscription Contributors" |
-| **Azure RBAC and role assignments** | Bind each group to a role at a scope |
-| **Scope** | Decides how far each assignment reaches |
+| **Azure RBAC role assignments** | Bind each group to a role at a scope |
 | **Least privilege** | Keeps each role and scope as small as the job allows |
 
-### Example access design (conceptual)
+### Example access design
 
 | Who (Entra group) | Role | Scope | Why |
 |---|---|---|---|
 | Sales cloud engineers | Contributor | Sales Subscription | Build and manage workloads, cannot grant access |
-| Ads engineers | Contributor | Ads resource group(s) | Narrower, limited to one workload |
+| Ads engineers | Contributor | An Ads resource group | Narrower, limited to one workload |
+| IT interns | Contributor | `rg-dev` in IT Shared Services | Development only, never production |
 | Auditors | Reader | HR Management Group | View-only across all HR subscriptions |
 | Platform administrators (very few) | Owner | Subscription or management group | Manage access and governance |
 | Identity administrators | *Entra role:* User Administrator | Tenant | Onboard and manage users and groups |
@@ -486,10 +522,10 @@ Tenant Root Group
 
 ---
 
-## 21. Original Architecture Diagrams
+## 20. Original Architecture Diagrams
 
 > [!NOTE]
-> These are my original educational diagrams, shown unmodified. Names are fictional. Hinglish annotations are translated in [`docs/additional-notes.md`](docs/additional-notes.md).
+> These are my original educational diagrams. Names are fictional, and Hinglish annotations are translated in [`docs/additional-notes.md`](docs/additional-notes.md).
 
 ### Diagram 1: Azure Management Group Hierarchy
 
@@ -497,11 +533,11 @@ Tenant Root Group
 
 **Introduction.** How Azure resources are organized beneath the Tenant Root Group.
 
-**Technical explanation.** Two child management groups, **HR** and **Sales**, hang from the root. HR contains a child management group (**Recruitment HR Team**) and a subscription (**Rangoli**). Sales contains two subscriptions (**Sales** and **Ads**). Each subscription holds a resource group containing virtual machines. A user (**Dhondhu**) is connected to the Ads resource group.
+**Technical explanation.** Two child management groups, **HR** and **Sales**, hang from the root. HR contains a child management group (**Recruitment HR Team**, with a Recruitment subscription) and a subscription (**Rangoli**). Sales contains two subscriptions (**Sales** and **Ads**). Each subscription holds a resource group containing virtual machines. A user (**Dhondhu**) is connected to the Ads resource group.
 
 **Important concepts.** Tenant Root Group; parent and child management groups; subscriptions grouped under management groups; subscription → resource group → resource nesting; downward inheritance.
 
-**Enterprise use case.** A compliance team applies HR-specific policy once at the HR management group and it covers both the Recruitment and Rangoli subscriptions, while Sales and Ads stay under a separate governance umbrella.
+**Enterprise use case.** A compliance team applies HR-specific policy once at the HR management group and it covers every subscription beneath it, while Sales stays under a separate governance umbrella.
 
 **Key learning points.**
 - Management groups organize subscriptions; resource groups organize resources.
@@ -509,7 +545,7 @@ Tenant Root Group
 - The hierarchy supports security, cost organization and compliance.
 
 > [!TIP]
-> **Accuracy note.** The Tenant Root Group, not a generic management group, is the true top level. See [Management Groups Explained](#6-management-groups-explained).
+> **Accuracy note.** The Tenant Root Group, not a generic management group, is the true top level. See [Azure Management Groups](#6-azure-management-groups).
 
 ---
 
@@ -553,7 +589,7 @@ Tenant Root Group
 - Directory tasks need Entra roles, not Azure roles.
 
 > [!TIP]
-> **Accuracy note.** In practice prefer subscription or resource group scope over management group Owner.
+> **Accuracy note.** In practice prefer subscription or resource group scope over Owner at a management group.
 
 ---
 
@@ -567,15 +603,12 @@ Tenant Root Group
 
 **Important concepts.** Environment-based resource groups; Owner vs Contributor; Global Administrator vs Owner; group-based RBAC at two scopes.
 
-**Enterprise use case.** A product team shares one subscription. The DevOps team contributes broadly, while a smaller group works only in development. Group membership changes take effect on access without editing role assignments.
+**Enterprise use case.** A product team shares one subscription. The DevOps team contributes broadly, while a smaller group works only in development. Membership changes alter access without editing role assignments.
 
 **Key learning points.**
 - Assign roles to groups, not people.
 - Narrower groups get narrower scopes.
 - Global Administrator and Owner belong to different systems.
-
-> [!TIP]
-> **Accuracy note.** The people share one avatar image, so read groups by label, not by picture.
 
 ---
 
@@ -589,7 +622,7 @@ Tenant Root Group
 
 **Important concepts.** Groups mapped to job functions; security groups for access control; least privilege; Owner reserved for very few; interns limited to `rg-dev`.
 
-**Enterprise use case.** Leads and DevOps engineers get Contributor on the subscription, interns get Contributor only on development, reviewers get Reader. A responsibility change means a group membership change.
+**Enterprise use case.** Leads and DevOps engineers get Contributor on the subscription, interns get Contributor only on development, reviewers get Reader. A change in responsibility is a group membership change.
 
 **Key learning points.**
 - Design access by job function.
@@ -601,7 +634,7 @@ Tenant Root Group
 
 ---
 
-## 22. Key Takeaways
+## 21. Key Takeaways
 
 1. **Identity and organization are separate.** Entra ID answers *who*; the hierarchy answers *where*.
 2. **Authenticate first, authorize second.** A valid token alone grants no resource access.
@@ -614,50 +647,47 @@ Tenant Root Group
 
 ---
 
-## 23. My Related Medium Articles
+## 22. My Related Medium Articles
 
-I publish my Azure learning notes on Medium. These three articles accompany the diagrams in this repository.
+I publish my Azure learning notes on Medium. These articles cover the same topics as the diagrams in this repository.
 
 | Article | Topic | Description | Link |
 |---|---|---|---|
-| **Understanding Azure Management Group Hierarchy: From Tenant Root to Resources** | Management groups and hierarchy | Walks through the structure from the Tenant Root Group down to resources. Companion to Diagram 1. | [Read Article](https://medium.com/@aniketkmr484/understanding-azure-management-group-hierarchy-from-tenant-root-to-resources-48b62324e115) |
-| **What Happens When You Create an Azure Account? Understanding Entra ID, Authentication & Authorization** | Entra ID, authentication and authorization | Explains what is created with a new Azure account and how sign-in and access differ. Companion to Diagram 2. | [Read Article](https://medium.com/@aniketkmr484/what-happens-when-you-create-an-azure-account-184dd1d4457a) |
-| **Azure RBAC Explained: How to Give Users Access to Azure Resources** | Azure RBAC | Covers roles, scope and role assignments for giving users access. Companion to Diagrams 3 to 5. | [Read Article](https://medium.com/@aniketkmr484/azure-rbac-explained-how-to-give-users-access-to-azure-resources-191cb291cc18) |
+| **Understanding Azure Management Group Hierarchy: From Tenant Root to Resources** | Management groups and resource hierarchy | The structure of Azure governance from the Tenant Root Group down to individual resources. Related to Diagram 1. | [Read Article](https://medium.com/@aniketkmr484/understanding-azure-management-group-hierarchy-from-tenant-root-to-resources-48b62324e115) |
+| **What Happens When You Create an Azure Account? Understanding Entra ID, Authentication & Authorization** | Entra ID, authentication and authorization | What is created with a new Azure account and how signing in differs from being allowed to act. Related to Diagram 2. | [Read Article](https://medium.com/@aniketkmr484/what-happens-when-you-create-an-azure-account-184dd1d4457a) |
+| **Azure RBAC Explained: How to Give Users Access to Azure Resources** | Azure RBAC | Giving users access to Azure resources with roles, scopes and role assignments. Related to Diagrams 3 to 5. | [Read Article](https://medium.com/@aniketkmr484/azure-rbac-explained-how-to-give-users-access-to-azure-resources-191cb291cc18) |
 
-**More from me:** [medium.com/@aniketkmr484](https://medium.com/@aniketkmr484)
+**My Medium profile:** [medium.com/@aniketkmr484](https://medium.com/@aniketkmr484)
 
 ---
 
-## 24. Official Microsoft Learning Resources
+## 23. Official Microsoft Documentation
 
 | Topic | Link |
 |---|---|
-| Management groups | [Microsoft Learn: Management groups overview](https://learn.microsoft.com/azure/governance/management-groups/overview) |
-| Resource Manager and resource groups | [Azure Resource Manager overview](https://learn.microsoft.com/azure/azure-resource-manager/management/overview) |
-| Organizing subscriptions | [Cloud Adoption Framework: Organize subscriptions](https://learn.microsoft.com/azure/cloud-adoption-framework/ready/azure-best-practices/organize-subscriptions) |
-| Azure RBAC | [What is Azure RBAC?](https://learn.microsoft.com/azure/role-based-access-control/overview) |
-| RBAC best practices | [Best practices for Azure RBAC](https://learn.microsoft.com/azure/role-based-access-control/best-practices) |
-| Azure vs Entra roles | [Azure roles, Entra roles and classic administrator roles](https://learn.microsoft.com/azure/role-based-access-control/rbac-and-directory-admin-roles) |
-| Microsoft Entra ID | [What is Microsoft Entra ID?](https://learn.microsoft.com/entra/fundamentals/whatis) |
-| Entra built-in roles | [Microsoft Entra built-in roles](https://learn.microsoft.com/entra/identity/role-based-access-control/permissions-reference) |
-| Groups | [Learn about groups and access rights](https://learn.microsoft.com/entra/fundamentals/concept-learn-about-groups) |
-| Elevating access | [Elevate access to manage all subscriptions](https://learn.microsoft.com/azure/role-based-access-control/elevate-access-global-admin) |
+| Management groups | [What are Azure management groups?](https://learn.microsoft.com/en-us/azure/governance/management-groups/overview) |
+| Resource hierarchy | [Resource organization (Cloud Adoption Framework)](https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/ready/landing-zone/design-area/resource-org) |
+| Azure RBAC | [What is Azure RBAC?](https://learn.microsoft.com/en-us/azure/role-based-access-control/overview) |
+| RBAC scope | [Understand scope for Azure RBAC](https://learn.microsoft.com/en-us/azure/role-based-access-control/scope-overview) |
+| RBAC best practices | [Best practices for Azure RBAC](https://learn.microsoft.com/en-us/azure/role-based-access-control/best-practices) |
+| Azure vs Entra roles | [Azure roles, Entra roles and classic administrator roles](https://learn.microsoft.com/en-us/azure/role-based-access-control/rbac-and-directory-admin-roles) |
+| Microsoft Entra ID | [What is Microsoft Entra ID?](https://learn.microsoft.com/en-us/entra/fundamentals/whatis) |
+| Entra built-in roles | [Microsoft Entra built-in roles](https://learn.microsoft.com/en-us/entra/identity/role-based-access-control/permissions-reference) |
+| Groups | [Learn about groups and access rights](https://learn.microsoft.com/en-us/entra/fundamentals/concept-learn-about-groups) |
+| Elevating access | [Elevate access to manage all subscriptions](https://learn.microsoft.com/en-us/azure/role-based-access-control/elevate-access-global-admin) |
 
 > [!NOTE]
 > Microsoft occasionally reorganizes documentation URLs. If a link redirects or breaks, search the topic title on Microsoft Learn.
 
 ---
 
-## 25. About the Author
+## 24. About the Author
 
 **Aniket Kumar**
 
-I document my Azure and DevOps learning through architecture diagrams, practical examples and technical articles, using GitHub and Medium to explain what I study in a clear, structured way.
+I document my Azure and DevOps learning through technical articles, original architecture diagrams and practical explanations. I use GitHub and Medium to explain what I study in a clear, structured way.
 
 <p>
-  <a href="https://www.linkedin.com/in/aniket484">
-    <img src="https://img.shields.io/badge/LinkedIn-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn" />
-  </a>
   <a href="https://github.com/aniket-devop">
     <img src="https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white" alt="GitHub" />
   </a>

@@ -1,60 +1,72 @@
-# Additional Notes: Diagram Annotation Translations
+# Additional Notes
 
-My original diagrams contain annotations written in Hinglish (Hindi in English letters). This page translates them into English. Translations are my best reading of the screenshots; some words are slightly informal on purpose.
+Supporting notes for the diagrams in the [main README](../README.md).
 
-Back to the [main README](../README.md).
+## English translation of Hinglish annotations
 
-## Diagram 1: Management Group Hierarchy
+The diagrams are annotated in Hinglish (Hindi written in English letters).
 
-| Original annotation | English meaning |
+### Diagram 1: Management Group Hierarchy
+
+| Original | English meaning |
 |---|---|
-| Management Group is Top Level Container | A management group is a top-level container (more precisely, the Tenant Root Group is the top) |
-| Alag alag subscription ko ek saath rakhne ke liye | To keep different subscriptions together |
-| Ek Management group ke andar bhi multiple Child Management group ho sakte hai | A management group can contain multiple child management groups |
-| Security ko maintain karne ke, Cost ko maintain karne ke, Governance compliance ko maintain karne ke liye ye hierarchy banai jati hai | This hierarchy is created to maintain security, cost and governance/compliance |
-| Papa Management Group | The parent (root) management group |
+| Papa Management Group | Parent management group |
+| Alg alg subscription ko ek saath rakhne ke lie | To keep different subscriptions together |
+| Ek Management group ke andar bhi multiple Child Management group ho sakte hai | A management group can also contain multiple child management groups |
+| Security ko maintain karne ke, Cost ko maintain karne ke lie, Governance compliance ko maintaine karne ke lie ye hierarchy banai jati hai | This hierarchy is created to maintain security, cost, and governance and compliance |
 
-## Diagram 2: Azure Account and Entra ID
+### Diagram 2: Azure Account and Entra ID
 
-| Original annotation | English meaning |
+| Original | English meaning |
 |---|---|
-| Azure Account hota kya hai? Isme login kaise karenge? | What is an Azure account? How do we log in to it? |
-| Jab aap naya azure ka account banate ho toh kya kya hota hai andar me | When you create a new Azure account, what gets created inside? |
-| 1. Entra ID (Tenant ID) | A Microsoft Entra ID tenant |
-| 2. Ek naya user aaja hai | A new user comes into existence |
-| 3. Ek naya Management group jiska naam tenant root group hota hai vo ban jata hai | A new management group called the Tenant Root Group is created |
-| Andar ghusna = Authentication | Entering = authentication |
-| Chor / Fresher | Thief / freshers: people without valid credentials who cannot pass the gate |
+| Azure Account hota kya hai? | What is an Azure account? |
+| Isme login kaise karenge? | How will we log in to it? |
+| Jab aap naya azure ka account banate ho toh kya kya hota hai andar me | When you create a new Azure account, what gets created inside it? |
+| Ek naya user aaja hai | A new user arrives |
+| Ek naya Management group jiska naam tenant root group hota hai vo ban jata hai | A new management group named "Tenant Root Group" gets created |
+| Andar ghusna = Authentication | Entering inside = Authentication |
+| Papa (next to Global Administrator) | Parent / the top-level administrator |
+| Chor / Fresher | Thief / newcomers: identities without valid credentials, kept outside the gate |
 
-## Diagram 3: User Access and RBAC
+### Diagram 3: User Access, Scope and Role
 
-| Original annotation | English meaning |
+| Original | English meaning |
 |---|---|
-| Ki Tinku ne users ko onboard kar pae... | So that Tinku can onboard users |
-| Kisi bhi user ko agar access dena hai toh 2 chize hai.. | To give access to any user, two things are needed: Scope and Role |
+| Ki Tinku nae users ko onboard kar pae... | So that Tinku can onboard users... |
+| Kisi bhi user ko agar access dena hai toh 2 chize hai.. | To give any user access, there are 2 things.. (Scope and Role) |
 
-## Diagram 4: Subscription and Role Management
+### Diagram 4: Subscription Management
 
-| Original annotation | English meaning |
+| Original | English meaning |
 |---|---|
 | Subscription Creation, Management Group Creation, association sab kuch ko mila ke Onboarding and Offboarding bolte hai.. | Subscription creation, management group creation and the association between them, taken together, are called onboarding and offboarding |
 
-## Diagram 5: Entra ID Groups
+### Diagram 5: Entra ID Groups
 
-| Original annotation | English meaning |
+| Original | English meaning |
 |---|---|
 | Minimum Privileged role dena hai.. | Give the minimum privileged role |
 | Kisi ko owner nahi dena hai, Only Contributor role dena hai.. | Do not give Owner to anyone; give only the Contributor role |
 | Group based RBAC use karna hai.. | Use group-based RBAC |
 
-## Notes on the fictional names
+## Technical clarifications
 
-Names such as KGF, Rangoli, Dhondhu, Bhakua, Tinku, Babli, Billu, Tillu and Lillu are invented teaching names. They do not refer to real people, companies or subscriptions.
+| Topic | What the diagram simplifies | What Azure actually does |
+|---|---|---|
+| Top-level container | "Management Group is Top Level Container" | The Tenant Root Group is the single top-level management group; others sit beneath it |
+| Azure Account | Shown as one box | You sign in as an Entra identity; the billing and resource boundary is the subscription |
+| Cost | Hierarchy "maintains cost" | Cost is reported per subscription and resource group; management groups provide structure |
+| Owner at management group | Tinku is Owner at HR MG | Valid, but broad. Prefer narrower scope in practice |
+| Global Administrator | Shown beside Owner | Separate system. Global Administrator has no Azure resource access until it elevates access |
 
-## Before publishing the screenshots
+## Checking links
 
-| Image | What to check |
-|---|---|
-| `03-user-access-and-rbac.png` | The bottom shows an `ssh` command with an IP address. Crop or blur it unless it is a long-gone lab address. Part of the left edge is also cut off, so some annotations are partly hidden. |
-| `02-azure-account-and-entra-id.png` | Contains a credit card graphic. Make sure it is a stock or fake image and not a real card. |
-| `04` and `05` | Photos used as user avatars. Confirm you are comfortable using them publicly and that you have the right to. |
+Run from any machine with internet access to confirm the URLs in the README respond:
+
+```bash
+grep -oE 'https?://[^) "]+' README.md | sort -u | while read -r u; do
+  printf '%s  %s\n' "$(curl -s -o /dev/null -L -w '%{http_code}' "$u")" "$u"
+done
+```
+
+Medium may return 403 to scripts even when the article is fine; open those in a browser.
