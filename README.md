@@ -654,10 +654,16 @@ I publish my Azure learning notes on Medium. These three articles accompany the 
 
 I document my Azure and DevOps learning through architecture diagrams, practical examples and technical articles, using GitHub and Medium to explain what I study in a clear, structured way.
 
-| Platform | Link |
-|---|---|
-| GitHub | [github.com/aniket-devop](https://github.com/aniket-devop) |
-| Medium | [medium.com/@aniketkmr484](https://medium.com/@aniketkmr484) |
-| LinkedIn | [linkedin.com/in/aniket484](https://www.linkedin.com/in/aniket484) |
+<p>
+  <a href="https://www.linkedin.com/in/aniket484">
+    <img src="https://img.shields.io/badge/LinkedIn-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn" />
+  </a>
+  <a href="https://github.com/aniket-devop">
+    <img src="https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white" alt="GitHub" />
+  </a>
+  <a href="https://medium.com/@aniketkmr484">
+    <img src="https://img.shields.io/badge/Medium-000000?style=for-the-badge&logo=medium&logoColor=white" alt="Medium" />
+  </a>
+</p>
 
 Spotted a technical inaccuracy or have a suggestion? Please open an issue. Feedback is welcome.
